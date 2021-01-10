@@ -9,7 +9,8 @@ module.exports.createUser = async (request)=>{
         password:request.password,
         first_name:request.firstName,
         last_name:request.lastName,
-        created_date:Date.now()
+        created_date:Date.now(),
+        client_id:request.clientId
     });
 
     return save;

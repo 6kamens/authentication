@@ -1,9 +1,20 @@
 const userAccountService = require('../services/userAccountService');
+const clientAppService = require('../services/clientAppService');
 const bcryptPassword = require('../utils/bcryptPassword');
 const { v4: uuidv4 }  = require('uuid');
+// const authorizeCodeGen = require('../utils/authorizeCodeGenerator');
 
 module.exports.register = async (req,res)=>{
     try {
+
+
+        const checkApp = await clientAppService.getAppByClientId(req.body.clientId);
+        if(!checkApp)  return res.status(401).json({status:false,statusCode:401,message:'invalid clientId or clientSecret'});
+
+        const isCorrectClientSecret = await bcryptPassword.verifyPassword(req.body.clientSecret, checkApp.client_secret );
+        if(!isCorrectClientSecret)  return res.status(401).json({status:false,statusCode:401,message:'invalid clientId or clientSecret'});
+
+
         const checkUser = await userAccountService.checkUserByUsername(req.body.username);
         if(checkUser)  return res.status(401).json({status:false,statusCode:401,message:'existing username'});
         
@@ -15,32 +26,15 @@ module.exports.register = async (req,res)=>{
                 username : req.body.username,
                 password : pass,
                 firstName : req.body.firstName,
-                lastName : req.body.lastName
+                lastName : req.body.lastName,
+                clientId : req.body.clientId
             }
         );
 
-        return res.json({status:true,statusCode:200,message:'success',data:createUser});
-    } catch (error) {
-        return res.status(500).json({status:false,statusCode:500,message:error.message});
-    }
-}
-
-module.exports.login = async (req,res)=>{
-    try {
-
-        const checkUser = await userAccountService.checkUserByUsername(req.body.username);
-        if(!checkUser)  return res.status(400).json({status:false,statusCode:400,message:'invalid username or password'});
-        
-        const isCorrectPassword = await bcryptPassword.verifyPassword(req.body.password,checkUser.password);
-       
-        if(isCorrectPassword){
-            return res.json({status:true,statusCode:200,message:'success',data:'hello world'});
-        }else{
-            return res.status(400).json({status:true,statusCode:400,message:'invalid username or password'});
-        }
-
+        return res.json({status:true,statusCode:200,message:'success',data:{userId: createUser.user_id}});
 
     } catch (error) {
         return res.status(500).json({status:false,statusCode:500,message:error.message});
     }
 }
+

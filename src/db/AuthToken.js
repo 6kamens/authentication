@@ -7,17 +7,7 @@ const schema = mongoose.Schema({
             required:true,
             unique : true,
         },
-        expired_access_token:{
-            type:Date
-        },
         refresh_token:{
-            type:String,
-            unique : true
-        },
-        expired_refresh_token:{
-            type:Date
-        },
-        authorization_code:{
             type:String,
             unique : true
         },
