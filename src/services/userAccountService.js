@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const { request } = require('express');
 const UserAccount = require('../db/UserAccount');
 
 module.exports.createUser = async (request)=>{
@@ -20,5 +21,12 @@ module.exports.checkUserByUsername = async (request)=>{
 
     const query = await UserAccount.findOne({username:request,status:true});
 
+    return query;
+}
+
+module.exports.getUserInfo = async (userId,clientId)=>{
+    
+    const query = await UserAccount.findOne({user_id:userId,client_id:clientId});
+    
     return query;
 }

@@ -14,7 +14,7 @@ module.exports.register = async (req,res)=>{
             redirectUri : req.body.redirectUri 
         });
 
-        return res.json({status:true,statusCode:200,message:'success',data:{clientId:insertResult.client_id,clientSecret:insertResult.client_secret}});
+        return res.json({status:true,statusCode:200,message:'success',data:{clientId:insertResult.client_id,clientSecret:uuidSecret}});
 
     } catch (error) {
 

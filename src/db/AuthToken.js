@@ -11,9 +11,9 @@ const schema = mongoose.Schema({
             type:String,
             unique : true
         },
-        user_authorities:{
+        authorize_code:{
             type:String
-        },
+        }
         session:{
             type:String
         }

@@ -6,14 +6,8 @@ const { v4: uuidv4 }  = require('uuid');
 
 module.exports.register = async (req,res)=>{
     try {
-
-
-        const checkApp = await clientAppService.getAppByClientId(req.body.clientId);
+        const checkApp = await clientAppService.verifyClient (req.body.clientId,req.body.clientSecret);
         if(!checkApp)  return res.status(401).json({status:false,statusCode:401,message:'invalid clientId or clientSecret'});
-
-        const isCorrectClientSecret = await bcryptPassword.verifyPassword(req.body.clientSecret, checkApp.client_secret );
-        if(!isCorrectClientSecret)  return res.status(401).json({status:false,statusCode:401,message:'invalid clientId or clientSecret'});
-
 
         const checkUser = await userAccountService.checkUserByUsername(req.body.username);
         if(checkUser)  return res.status(401).json({status:false,statusCode:401,message:'existing username'});
