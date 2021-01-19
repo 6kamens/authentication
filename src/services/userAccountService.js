@@ -24,9 +24,16 @@ module.exports.checkUserByUsername = async (request)=>{
     return query;
 }
 
-module.exports.getUserInfo = async (userId,clientId)=>{
+module.exports.getUserInfo = async (userId)=>{
     
-    const query = await UserAccount.findOne({user_id:userId,client_id:clientId});
+    const query = await UserAccount.findOne({user_id:userId});
     
     return query;
+}
+
+module.exports.getPasswordByUserId = async (userId)=>{
+    
+    const query = await UserAccount.findOne({user_id:userId}).select({password:1});
+    
+    return query.password;
 }

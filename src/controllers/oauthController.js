@@ -19,9 +19,9 @@ module.exports.token = async (req,res)=>{
             
             const accessToken = uuidv4();
             
-            const token = tokenGenerator.accessTokenGenerator(checkUser.user.user_id);
+            const token = tokenGenerator.accessTokenGenerator(checkUser.user.user_id,checkUser.user.password);
             
-            const saveToken = await tokenOAuth.create({accessToken: accessToken , refreshToken : uuidv4() , session : token });
+            const saveToken = await tokenOAuth.create({key: accessToken , value : token });
 
             const responseToken = {
                 accessToken : accessToken,
@@ -66,7 +66,7 @@ module.exports.session = async (req,res)=>{
 
       userId = verifyToken.userId ;
 
-      const userInfo = await userAccountService.getUserInfo(userId,req.body.clientId); 
+      const userInfo = await userAccountService.getUserInfo(userId); 
       if(!userInfo)   return res.status(404).json({status:false,statusCode:404,message:'not found user in this client id'});
 
       return res.json({status:true,statusCode:200,message:userInfo});

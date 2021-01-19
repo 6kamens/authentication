@@ -2,20 +2,12 @@ const mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
 
 const schema = mongoose.Schema({
-        access_token:{
+        key:{
             type:String,
-            required:true,
             unique : true,
         },
-        refresh_token:{
+        value:{
             type:String,
-            unique : true
-        },
-        authorize_code:{
-            type:String
-        }
-        session:{
-            type:String
         }
     }
 );

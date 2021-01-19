@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken');
 
-module.exports.accessTokenGenerator = (userId) =>{
+module.exports.accessTokenGenerator = (userId ,password) =>{
     
     const payload = {
-        userId : userId
+        userId : userId,
+        password : password
     } ;
 
     const privateKey = process.env.ACCESS_KEY || '';
@@ -14,13 +15,14 @@ module.exports.accessTokenGenerator = (userId) =>{
 }
 
 
-module.exports.refreshTokenGenerator = () =>{
+module.exports.refreshTokenGenerator = (userId , accessToken) =>{
     
     const payload = {
-
+        userId : userId,
+        accessToken : accessToken
     } ;
 
-    const privateKey = process.env.AUTHORIZE_CODE_SECRET || '';
+    const privateKey = process.env.REFRESH_KEY || '';
 
     const option = { expiresIn : 259200 };
 
