@@ -69,7 +69,17 @@ module.exports.session = async (req,res)=>{
       const userInfo = await userAccountService.getUserInfo(userId); 
       if(!userInfo)   return res.status(404).json({status:false,statusCode:404,message:'not found user in this client id'});
 
-      return res.json({status:true,statusCode:200,message:userInfo});
+      return res.json({status:true,statusCode:200,message:'success',data:{
+          userId : userInfo.user_id,
+          username : userInfo.username,
+          firstName : userInfo.first_name ,
+          lastName : userInfo.last_name,
+          role:userInfo.role,
+          picture:userInfo.picture,
+          gender: userInfo.gender,
+          birthDate :userInfo.birthdate,
+          status : userInfo.status
+      }});
 
 
     } catch (error) {

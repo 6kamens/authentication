@@ -19,11 +19,23 @@ const schema = mongoose.Schema({
     password:{
         type:String
     },
+    role:{
+        type:String
+    },
     first_name:{
         type:String
     },
     last_name:{
         type:String
+    },
+    gender:{
+        type:String
+    },
+    picture:{
+        type:String
+    },
+    birthdate:{
+        type:Date
     },
     status:{
         type:Boolean,

@@ -7,6 +7,7 @@ module.exports.createUser = async (request)=>{
     const save = await UserAccount.create({
         user_id: request.userId,
         username: request.username,
+        role:'MEMBER',
         password:request.password,
         first_name:request.firstName,
         last_name:request.lastName,
