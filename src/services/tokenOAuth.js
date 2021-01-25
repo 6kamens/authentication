@@ -3,6 +3,7 @@ const bcryptPassword = require('../utils/bcryptPassword');
 const AuthToken = require('../db/Session');
 const { v4: uuidv4 }  = require('uuid');
 const jwt = require('jsonwebtoken');
+const tokenGenerator = require('../utils/tokenGenerator');
 
 
 module.exports.oauthPasswordCredentials = async (username,password)=>{
@@ -21,11 +22,13 @@ module.exports.oauthPasswordCredentials = async (username,password)=>{
 
 }
 
-module.exports.create = async (request)=>{
+module.exports.create = async (key,user)=>{
+
+   const token = tokenGenerator.accessTokenGenerator(user.user_id);
 
    const save = await AuthToken.create({
-      key : request.key,
-      value : request.value
+      key : key,
+      value : token
    });
 
    return save;
@@ -47,11 +50,11 @@ module.exports.verifyAccessToken = async (accessToken)=>{
 
       const session = jwt.verify(query.value,privateKey);
 
-      if(session.userId != '' || session.userId.length != 0){
-         const checkPassword = await userAccountService.getPasswordByUserId(session.userId);
-         if(checkPassword != session.password)
-            return {status : false};
-      }
+      // if(session.userId != '' || session.userId.length != 0){
+      //    const checkPassword = await userAccountService.getPasswordByUserId(session.userId);
+      //    if(checkPassword != session.password)
+      //       return {status : false};
+      // }
 
       return  {status : true , userId : session.userId} ;
 

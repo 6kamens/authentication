@@ -18,10 +18,8 @@ module.exports.token = async (req,res)=>{
             if(!checkUser.result)  return res.status(400).json({status:false,statusCode:400,message:'invalid username or password'});
             
             const accessToken = uuidv4();
-            
-            const token = tokenGenerator.accessTokenGenerator(checkUser.user.user_id,checkUser.user.password);
-            
-            const saveToken = await tokenOAuth.create({key: accessToken , value : token });
+                        
+            const saveToken = await tokenOAuth.create(accessToken,checkUser.user);
 
             const responseToken = {
                 accessToken : accessToken,

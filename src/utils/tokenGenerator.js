@@ -1,10 +1,9 @@
 const jwt = require('jsonwebtoken');
 
-module.exports.accessTokenGenerator = (userId ,password) =>{
+module.exports.accessTokenGenerator = (userId) =>{
     
     const payload = {
-        userId : userId,
-        password : password
+        userId : userId
     } ;
 
     const privateKey = process.env.ACCESS_KEY || '';
